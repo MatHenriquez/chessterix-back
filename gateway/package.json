@@ -8,7 +8,7 @@
     "start:dev": "nodemon src/index.ts",
     "test": "jest --config=jest.config.js --detectOpenHandles",
     "lint": "eslint \"{src,data,apps,libs,test}/**/*.ts\" --fix",
-    "format": "prettier --write \"src/**/*.ts\" \"data/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\""
   },
   "lint-staged": {
     "src/**/*.ts": [
