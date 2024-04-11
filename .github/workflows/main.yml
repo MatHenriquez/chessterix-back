@@ -26,6 +26,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Install dependencies
+        run: |
+          cd gateway
+          npm install
+
       - name: Lint
         run: |
           cd gateway
@@ -36,9 +41,8 @@ jobs:
           cd gateway
           npm run format
 
-      - name: npm install, build, and test
+      - name: build and test
         run: |
           cd gateway
-          npm install
           npm run build --if-present
           npm test
