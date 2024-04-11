@@ -1,7 +1,5 @@
 import request from 'supertest';
-import express from 'express';
 import { server } from '../index';
-import { Server } from 'http';
 
 describe('GET /', () => {
   it('should return "Hello World!"', async () => {
