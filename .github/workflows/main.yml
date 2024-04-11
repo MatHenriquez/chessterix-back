@@ -1,44 +1,48 @@
 name: CI
 
 on:
-    push:
-        branches: [ main ]
-    pull_request:
-        branches: [ '*' ]
+  push:
+    branches: [main]
+  pull_request:
+    branches: ["*"]
 
 jobs:
   run-tests:
-        env:
-            PORT: 3000
+    env:
+      PORT: 3000
 
-        runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                node-version: [20.x]
+    strategy:
+      matrix:
+        node-version: [20.x]
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
-              with:
-                node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-            - name: NPM or Yarn install with caching
-              uses: bahmutov/npm-install@v1.6.0
-        
-            - name: Lint
-              run: npm run lint
-        
-            - name: Format
-              run: npm run format
+      - name: NPM or Yarn install with caching
+        run: |
+          cd gateway
+          npx bahmutov/npm-install@v1.6.0
 
-            - name: npm install, build, and test
-              run: |
-                    cd gateway
-                    npm ci
-                    npm run build --if-present
-                    npm test
-        
+      - name: Lint
+        run: |
+          cd gateway
+          npm run lint
+
+      - name: Format
+        run: |
+          cd gateway
+          npm run format
+
+      - name: npm install, build, and test
+        run: |
+          cd gateway
+          npm run build --if-present
+          npm test
