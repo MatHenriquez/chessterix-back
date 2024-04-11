@@ -1,0 +1,18 @@
+# Ignore all files in the build/ directory
+build/*
+!build/.gitkeep
+
+# Ignore all files in the dist/ directory
+dist/*
+!dist/.gitkeep
+
+# Ignore all node_modules folders
+**/node_modules
+!node_modules/.gitkeep
+
+# Ignore environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
