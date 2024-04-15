@@ -10,6 +10,6 @@ RUN npm install -g ts-node
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 8000
 
 CMD ["npm", "start"]
