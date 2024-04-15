@@ -6,3 +6,6 @@ export NVM_DIR="$HOME/.nvm"
 
 cd gateway
 npm run test
+
+cd ../auth
+npm run test

@@ -7,9 +7,9 @@ on:
     branches: ["*"]
 
 jobs:
-  run-tests:
+  run-gateway-tests:
     env:
-      PORT: 3000
+      PORT: 8000
 
     runs-on: ubuntu-latest
 
@@ -44,5 +44,45 @@ jobs:
       - name: build and test
         run: |
           cd gateway
+          npm run build --if-present
+          npm test
+
+  run-auth-tests:
+    env:
+      PORT: 8001
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          cd auth
+          npm install
+
+      - name: Lint
+        run: |
+          cd auth
+          npm run lint
+
+      - name: Format
+        run: |
+          cd auth
+          npm run format
+
+      - name: build and test
+        run: |
+          cd auth
           npm run build --if-present
           npm test

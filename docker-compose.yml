@@ -3,7 +3,14 @@ services:
   gateway:
     build: ./gateway
     ports:
-      - "3000:3000"
+      - "8000:8000"
     volumes:
       - ./gateway:/usr/src/app
+    command: npm start
+  auth:
+    build: ./auth
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./auth:/usr/src/app
     command: npm start
