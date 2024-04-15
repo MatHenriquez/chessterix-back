@@ -7,3 +7,10 @@ services:
     volumes:
       - ./gateway:/usr/src/app
     command: npm start
+  auth:
+    build: ./auth
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./auth:/usr/src/app
+    command: npm start
