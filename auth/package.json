@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "start:dev": "nodemon src/index.ts",
+    "start": "ts-node src/app.ts",
+    "start:dev": "nodemon src/app.ts",
     "test": "jest --config=jest.config.js --detectOpenHandles",
     "lint": "eslint \"{src,data,apps,libs,test}/**/*.ts\" --fix",
     "format": "prettier --write \"src/**/*.ts\"",
