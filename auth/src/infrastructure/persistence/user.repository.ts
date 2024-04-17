@@ -1,14 +1,13 @@
 import { AppDataSource } from '../../config/orm.config';
 import { User } from '../../domain/entities/User';
+import { IUserRepository } from '../../domain/repositories/user.repository';
 
-export class UserRepository {
+export class UserRepository implements IUserRepository {
   private readonly dataSourceManager =
     AppDataSource.getRepository(User).manager;
 
   async create(user: User) {
-    const newUser = new User(user.email, user.password);
-
-    return await this.dataSourceManager.save(newUser);
+    return await this.dataSourceManager.save(user);
   }
 
   async findOneBy(criteria: string, value: string | number) {
