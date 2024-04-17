@@ -3,15 +3,9 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
 import 'reflect-metadata';
-import { initializeDb } from './config/orm.config';
 import { HttpError } from './utils/httpError';
 import { AuthRoutes } from './presentation/routes';
-
-dotenv.config();
-
-const port = process.env.PORT || 3000;
 
 const app: Express = express();
 
@@ -43,7 +37,4 @@ app.use('*', (req: Request, res: Response) => {
   res.status(404).json({ error: 'Not found' });
 });
 
-export const server = app.listen(port, async () => {
-  await initializeDb();
-  console.log(`Auth server is running on port ${port}`);
-});
+export default app;
