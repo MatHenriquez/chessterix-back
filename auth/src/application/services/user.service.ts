@@ -1,19 +1,23 @@
 import { User } from '../../domain/entities/User';
 import { IUserRepository } from '../../domain/repositories/user.repository';
 import { UserRepository } from '../../infrastructure/persistence/user.repository';
+import { EncryptionService } from '../../infrastructure/services/encryption.service';
 import { HttpError } from '../../utils/httpError';
 import { InternalServerError } from '../../utils/internalServerError';
 import { CreateUserDto } from '../dtos/requests/create-user.dto';
 import { UpdateUserDto } from '../dtos/requests/update-user.dto';
 import { CreatedUserDto } from '../dtos/responses/created-user.dto';
+import { IEncryptionService } from '../interfaces/encryption-service.interface';
 import { IUserService } from '../interfaces/user-service.interface';
 import { ErrorMessages } from './utils/errorMessages';
 
 export class UserService implements IUserService {
   private readonly userRepository: IUserRepository;
+  private readonly encryptionService: IEncryptionService;
 
   constructor() {
     this.userRepository = new UserRepository();
+    this.encryptionService = new EncryptionService();
   }
 
   async createUser({ email, password }: CreateUserDto) {
@@ -26,7 +30,9 @@ export class UserService implements IUserService {
       if (isEmailAlreadyInUse)
         throw new HttpError(ErrorMessages.EMAIL_ALREADY_IN_USE, 409);
 
-      const user = new User(email, password);
+      const encryptedPassword = await this.encryptionService.hash(password);
+
+      const user = new User(email, encryptedPassword);
       const createdUser = await this.userRepository.create(user);
 
       return {

@@ -6,7 +6,6 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
 
 app.use(morgan('dev'));
 
@@ -19,9 +18,7 @@ app.use(
 );
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+  res.send('Chessterix API');
 });
 
-export const server = app.listen(port, () => {
-  console.log(`Gateway server is running on port ${port}`);
-});
+export default app;
