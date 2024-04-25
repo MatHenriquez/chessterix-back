@@ -6,7 +6,6 @@ dotenv.config();
 
 const app: Express = express();
 app.use(morgan('dev'));
-const port = process.env.PORT || 3000;
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Chessterix API');
