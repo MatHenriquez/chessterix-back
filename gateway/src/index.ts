@@ -6,7 +6,6 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 dotenv.config();
 
 const app: Express = express();
-
 app.use(morgan('dev'));
 
 app.use(
