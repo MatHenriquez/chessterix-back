@@ -12,6 +12,6 @@ export class User extends Base {
   @Column('varchar', { length: 30, unique: true })
   email: string;
 
-  @Column('varchar', { length: 20 })
+  @Column('varchar')
   password: string;
 }
