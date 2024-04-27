@@ -5,13 +5,17 @@ import { IUserService } from '../application/interfaces/user-service.interface';
 import { CreateUserDto } from '../application/dtos/requests/create-user.dto';
 import { validate } from 'class-validator';
 import { HttpError } from '../utils/httpError';
+import { IJwtService } from '../application/interfaces/jwt-service.interface';
+import { JwtService } from '../infrastructure/services/jwt.service';
 
 export class AuthRoutes {
   private router: Router;
   private readonly userService: IUserService;
+  private readonly jwtService: IJwtService;
 
   constructor() {
     this.userService = new UserService();
+    this.jwtService = new JwtService();
     this.router = express.Router();
     this.routes();
   }
@@ -39,7 +43,12 @@ export class AuthRoutes {
             email,
             password
           });
-          res.status(201).json(createdUser);
+
+          const token = this.jwtService.createToken(createdUser);
+          res.header('auth-token', token).json({
+            error: null,
+            data: { token }
+          });
         } catch (error) {
           if (error instanceof HttpError)
             res.status(error.statusCode).json({ error: error.message });
