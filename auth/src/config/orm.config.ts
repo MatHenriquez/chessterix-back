@@ -25,3 +25,5 @@ export const initializeDb = () =>
       console.log('Database connected');
     })
     .catch((error) => console.log(error));
+
+export const closeDb = () => AppDataSource.close();
