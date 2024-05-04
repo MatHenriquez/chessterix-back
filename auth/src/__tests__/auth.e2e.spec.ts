@@ -1,16 +1,13 @@
 import request from 'supertest';
 import app from '../index';
-import { initializeDb, closeDb } from '../config/orm.config';
+
+import { UserRepository } from '../infrastructure/persistence/user.repository';
+import { EncryptionService } from '../infrastructure/services/encryption.service';
+
+jest.mock('../infrastructure/persistence/user.repository');
+jest.mock('../infrastructure/services/encryption.service');
 
 describe('Auth routes', () => {
-  beforeAll(async () => {
-    await initializeDb();
-  });
-
-  afterAll(async () => {
-    await closeDb();
-  });
-
   describe('POST /login', () => {
     it('should return 400 if email or password are not provided', async () => {
       const response = await request(app).post('/login').send({});
@@ -24,6 +21,8 @@ describe('Auth routes', () => {
     });
 
     it('should return 404 if user is not found', async () => {
+      jest.spyOn(UserRepository.prototype, 'findOneBy').mockResolvedValue(null);
+
       const response = await request(app).post('/login').send({
         email: 'fake@mail.com',
         password: 'Password135.'
@@ -36,6 +35,19 @@ describe('Auth routes', () => {
     });
 
     it('should return 401 if password is invalid', async () => {
+      jest.spyOn(UserRepository.prototype, 'findOneBy').mockResolvedValue({
+        id: 1,
+        email: 'john@doe.com',
+        password: 'Password135.',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: new Date()
+      });
+
+      jest
+        .spyOn(EncryptionService.prototype, 'compare')
+        .mockResolvedValue(false);
+
       const response = await request(app).post('/login').send({
         email: 'john@doe.com',
         password: 'Password135..'
@@ -46,6 +58,19 @@ describe('Auth routes', () => {
     });
 
     it('should return 200 with token if user is found and password is valid', async () => {
+      jest.spyOn(UserRepository.prototype, 'findOneBy').mockResolvedValue({
+        id: 1,
+        email: 'john@doe.com',
+        password: 'Password135.',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: new Date()
+      });
+
+      jest
+        .spyOn(EncryptionService.prototype, 'compare')
+        .mockResolvedValue(true);
+
       const response = await request(app).post('/login').send({
         email: 'john@doe.com',
         password: 'Password135.'
