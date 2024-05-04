@@ -3,9 +3,11 @@ import app from '../index';
 
 import { UserRepository } from '../infrastructure/persistence/user.repository';
 import { EncryptionService } from '../infrastructure/services/encryption.service';
+import { JwtService } from '../infrastructure/services/jwt.service';
 
 jest.mock('../infrastructure/persistence/user.repository');
 jest.mock('../infrastructure/services/encryption.service');
+jest.mock('../infrastructure/services/jwt.service');
 
 describe('Auth routes', () => {
   describe('POST /login', () => {
@@ -70,6 +72,8 @@ describe('Auth routes', () => {
       jest
         .spyOn(EncryptionService.prototype, 'compare')
         .mockResolvedValue(true);
+
+      jest.spyOn(JwtService.prototype, 'createToken').mockReturnValue('token');
 
       const response = await request(app).post('/login').send({
         email: 'john@doe.com',
