@@ -8,7 +8,7 @@ describe('Auth routes', () => {
   });
 
   afterAll(async () => {
-    closeDb();
+    await closeDb();
   });
 
   describe('POST /login', () => {
